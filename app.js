@@ -1,36 +1,21 @@
-// app.js
 const express = require('express');
-const activoController = require('./controladores/activoController');
-const ubicacionController = require('./controladores/ubicacionController');
-const responsableController = require('./controladores/responsableController');
-
-const app = express();
-const PORT = process.env.PORT || 3000;
+const app = express(); // Crear una instancia de la aplicación Express
 
 // Middleware para parsear JSON
 app.use(express.json());
 
-// Rutas para activos
-app.get('/activos', activoController.obtenerActivos);
-app.get('/activos/:id', activoController.obtenerActivoPorId);
-app.post('/activos', activoController.crearActivo);
-app.put('/activos/:id', activoController.actualizarActivo);
-app.delete('/activos/:id', activoController.eliminarActivo);
+// Routers para cada recurso
+const activosRouter = require('./router/activos');
+const ubicacionesRouter = require('./router/ubicaciones');
+const responsablesRouter = require('./router/responsables');
 
-// Rutas para ubicaciones
-app.get('/ubicaciones', ubicacionController.obtenerUbicaciones);
-app.get('/ubicaciones/:id', ubicacionController.obtenerUbicacionPorId);
-app.post('/ubicaciones', ubicacionController.crearUbicacion);
-app.put('/ubicaciones/:id', ubicacionController.actualizarUbicacion);
-app.delete('/ubicaciones/:id', ubicacionController.eliminarUbicacion);
+// Configurar la aplicación para usar los routers de cada recurso
+app.use('/activos', activosRouter);
+app.use('/ubicaciones', ubicacionesRouter);
+app.use('/responsables', responsablesRouter);
 
-// Rutas para responsables
-app.get('/responsables', responsableController.obtenerResponsables);
-app.get('/responsables/:id', responsableController.obtenerResponsablePorId);
-app.post('/responsables', responsableController.crearResponsable);
-app.put('/responsables/:id', responsableController.actualizarResponsable);
-app.delete('/responsables/:id', responsableController.eliminarResponsable);
-
-app.listen(PORT, () => {
-  console.log(`Servidor iniciado en el puerto ${PORT}`);
+// Iniciar el servidor
+app.listen(3000, () => {
+  console.log('Servidor iniciado en el puerto 3000');
 });
+
